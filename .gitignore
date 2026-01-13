@@ -1,0 +1,101 @@
+# Markdown files - exclude all except README.md
+*.md
+!README.md
+
+# Python
+__pycache__/
+.claude/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+*.bat
+
+# Virtual Environment
+venv/
+.venv/
+ENV/
+env/
+.env
+
+# PyTest
+.pytest_cache/
+.tox/
+.coverage
+.coverage.*
+htmlcov/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+pytest_debug.log
+
+# Playwright
+playwright-report/
+test-results/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+logs/
+*.log
+
+# Reports
+reports/screenshots/
+reports/logs/
+reports/*.html
+reports/allure-results*/
+reports/allure-report/
+allure-results/
+allure-report/
+
+# Temporary files
+*.tmp
+*.temp
+tmp*/
+temp*/
+tmpclaude-*
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Windows reserved device names
+nul
+NUL
+CON
+PRN
+AUX
+com[1-9]
+lpt[1-9]
+
+# Node modules (for Allure)
+node_modules/
+
+# Jupyter Notebook
+.ipynb_checkpoints

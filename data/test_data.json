@@ -1,0 +1,36 @@
+{
+    "test_data": [
+        {
+            "search_query": "shoes",
+            "max_price": 220,
+            "limit": 5,
+            "description": "Search for shoes under $220"
+        },
+        {
+            "search_query": "laptop",
+            "max_price": 500,
+            "limit": 5,
+            "description": "Search for laptops under $500"
+        },
+        {
+            "search_query": "headphones",
+            "max_price": 100,
+            "limit": 5,
+            "description": "Search for headphones under $100"
+        }
+    ],
+    "browser_matrix": [
+        {
+            "browser": "chromium",
+            "headless": true
+        },
+        {
+            "browser": "firefox",
+            "headless": true
+        },
+        {
+            "browser": "webkit",
+            "headless": true
+        }
+    ]
+}
