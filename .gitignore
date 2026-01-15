@@ -1,7 +1,9 @@
-# Markdown files - exclude all except README.md
+# Markdown files - exclude all except specific files and docs folder
 *.md
 !README.md
 !claude.md
+!docs/*.md
+!tests/README.md
 
 # Python
 __pycache__/

@@ -454,3 +454,53 @@ Each browser session creates separate log files with timestamps for easy trackin
 - Network requests (method, URL)
 - Network responses (status code, URL)
 - Failed requests
+
+## Documentation & Interview Preparation
+
+For comprehensive project documentation and interview preparation, see:
+
+**[Project Guide & Interview Questions](docs/PROJECT_GUIDE_AND_INTERVIEW.md)**
+
+This document includes:
+- **How to Read This Project**: Step-by-step learning path through the codebase
+- **Architecture Deep Dive**: Detailed diagrams and explanations
+- **Key Concepts Explained**: POM, Smart Locator, Fixtures, Core Functions
+- **Interview Questions - This Project**: 15+ questions about the framework
+- **Interview Questions - Playwright**: 15+ questions about Playwright
+- **Interview Questions - General Automation**: Best practices and design patterns
+
+## Project Structure
+
+```
+ebay_automation_infra/
+├── core/                    # Framework core components
+│   ├── base_page.py         # Abstract base class for pages
+│   ├── smart_locator.py     # Smart locator with fallback
+│   ├── browser_factory.py   # Browser session management
+│   ├── wait_handler.py      # Smart waiting strategies
+│   └── retry_handler.py     # Retry with exponential backoff
+├── pages/                   # Page Object classes
+│   ├── home_page.py         # eBay homepage
+│   ├── search_results_page.py
+│   ├── product_page.py
+│   └── cart_page.py
+├── tests/                   # Test cases
+│   ├── unit/                # Unit tests
+│   └── e2e/                 # End-to-end tests
+├── config/                  # Configuration
+│   └── settings.py          # Framework settings
+├── utils/                   # Utilities
+├── data/                    # Test data files
+├── docs/                    # Documentation
+│   └── PROJECT_GUIDE_AND_INTERVIEW.md
+├── conftest.py              # Pytest fixtures
+└── requirements.txt         # Dependencies
+```
+
+## Support
+
+For issues or questions:
+- Check logs in `logs/` directory
+- Review screenshots in `reports/screenshots/`
+- Check Allure report for detailed execution trace
+- See `docs/PROJECT_GUIDE_AND_INTERVIEW.md` for troubleshooting
