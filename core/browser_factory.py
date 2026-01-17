@@ -32,9 +32,17 @@ class BrowserSession:
     page: Page
     browser_config: BrowserConfig
     created_at: datetime = field(default_factory=datetime.now)
+    trace_path: Optional[str] = None
 
     def close(self) -> None:
         """Close the session and release resources."""
+        # Stop tracing if active and save to file
+        try:
+            if self.trace_path and self.context:
+                self.context.tracing.stop(path=self.trace_path)
+        except Exception:
+            pass
+
         try:
             if self.page and not self.page.is_closed():
                 self.page.close()
@@ -70,24 +78,6 @@ class BrowserFactory:
         """Get or create Playwright instance."""
         if self._playwright is None:
             settings.ensure_directories()
-            logs_dir = settings.BASE_DIR / "logs"
-            logs_dir.mkdir(exist_ok=True)
-
-            os.environ["DEBUG"] = "pw:api"
-
-            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-            playwright_log_file = logs_dir / f"playwright_{timestamp}.log"
-
-            log_handler = logging.FileHandler(playwright_log_file, mode='a', encoding='utf-8')
-            log_handler.setLevel(logging.DEBUG)
-            formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-            log_handler.setFormatter(formatter)
-
-            pw_logger = logging.getLogger("playwright")
-            pw_logger.setLevel(logging.DEBUG)
-            pw_logger.addHandler(log_handler)
-
-            self.logger.info(f"Playwright logs will be written to: {playwright_log_file}")
             self._playwright = sync_playwright().start()
         return self._playwright
 
@@ -119,6 +109,7 @@ class BrowserFactory:
         storage_state: Optional[str] = None,
         record_video: bool = False,
         record_har: bool = False,
+        record_trace: bool = False,
         **context_options,
     ) -> BrowserSession:
         """
@@ -132,6 +123,7 @@ class BrowserFactory:
             storage_state: Path to storage state file
             record_video: Whether to record video
             record_har: Whether to record HAR file
+            record_trace: Whether to record Playwright trace (captures API calls, screenshots, etc.)
             **context_options: Additional context options
 
         Returns:
@@ -203,6 +195,17 @@ class BrowserFactory:
         context = browser.new_context(**ctx_options)
         context.set_default_timeout(config.timeout)
 
+        # Setup Playwright tracing (captures API calls, screenshots, snapshots)
+        trace_file_path = None
+        if record_trace:
+            settings.ensure_directories()
+            traces_dir = settings.REPORTS_DIR / "traces"
+            traces_dir.mkdir(exist_ok=True)
+            temp_session_id = self._generate_session_id(browser_name)
+            trace_file_path = str(traces_dir / f"{temp_session_id}.zip")
+            context.tracing.start(screenshots=True, snapshots=True, sources=True)
+            self.logger.info(f"Playwright tracing enabled, will save to: {trace_file_path}")
+
         # Create page
         page = context.new_page()
 
@@ -267,6 +270,7 @@ class BrowserFactory:
             context=context,
             page=page,
             browser_config=config,
+            trace_path=trace_file_path,
         )
 
         # Track session

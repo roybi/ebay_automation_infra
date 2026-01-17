@@ -109,6 +109,31 @@ pytest tests/ --browser=chromium
 pytest tests/ -n 3 --browser=chromium --browser=firefox --browser=webkit
 ```
 
+### Parallel Execution with Allure Reporting
+
+```bash
+# Run tests in parallel with Allure results
+pytest tests/ -n 4 --alluredir=allure-results -v
+
+# Parallel with clean results directory (recommended for fresh runs)
+pytest tests/ -n 4 --alluredir=allure-results --clean-alluredir -v
+
+# Parallel execution on multiple browsers with Allure
+pytest tests/e2e/ -n 3 --browser=chromium --browser=firefox --browser=webkit --alluredir=allure-results -v
+
+# Run E2E tests in parallel with 2 workers and Allure
+pytest tests/e2e/ -n 2 --alluredir=allure-results --clean-alluredir -v
+
+# View the Allure report after parallel execution
+allure serve allure-results
+```
+
+**Important Notes for Parallel + Allure:**
+- Use `--clean-alluredir` to clear previous results before a new test run
+- Each worker writes to the same `allure-results` directory (thread-safe)
+- Allure aggregates results from all workers into a single report
+- For large test suites, use `-n auto` to automatically detect CPU count
+
 ## E2E Test Scenarios
 
 ### Main Scenario (as per NessHomeTest.docx)
